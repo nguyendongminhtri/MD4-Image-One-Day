@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<img id="img-of-the-day">
+<div id="form">
+    <form action="/comment" method="POST">
+        <input type="hidden" name="id" th:value="${commentRate.id}">
+        <div>
+            <h2><label>Rate</label></h2>
+            <input type="text" name="rate" th:value="${commentRate.rate}">
+        </div>
+        <div>
+            <h2><label>Author:</label></h2>
+            <input type="text" name="author" th:value="${commentRate.author}">
+        </div>
+        <div>
+            <h2><label>Feedback:</label></h2>
+<!--            <input type="text" name="comment" th:value="${commentRate.comment}">-->
+            <textarea name="comment" rows="4" cols="50" th:value="${commentRate.comment}">
+</textarea>
+        </div>
+        <input type="submit" value="Comment"/>
+    </form>
+</div>
+
+<div th:each="c : ${comments}">
+<!--    <td>-->
+<!--        <a th:href="@{/customers/{id}(id=${c.id})}" th:text="${c.name}"></a>-->
+<!--    </td>-->
+    -----------------------------------------------------------------------------------
+    </br>
+    <h3><span th:text="${c.rate}"></span> star</h3></br>
+    Comment:</br>
+    <span th:text="${c.comment}"></span></br>
+    <h3><span th:text="${c.likeComment}"></span><a th:href="@{/comment/{id}/like(id=${c.id})}"> Like</a></h3></br>
+    Author:</br>
+    <h3><span th:text="${c.author}"></span></h3></br>
+</div>
+
+
+<script>
+    let query = 'https://api.nasa.gov/planetary/apod?api_key=hzDAf6uF3ITyGPrH5VhygC94eOUBHTPSQqzbwKWd';
+    let request = new XMLHttpRequest();
+    request.open('GET', query);
+    request.onload = function() {
+        if (request.status === 200) {
+            let response = JSON.parse(request.responseText);
+            document.getElementById('img-of-the-day').setAttribute('src', response.url);
+        }
+    };
+    request.send();
+</script>
+</body>
+</html>
